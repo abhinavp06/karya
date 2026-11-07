@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// TODO: check golang naming conventions (functions, variables, etc.)
 func health_check(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Do the task!")
 }
