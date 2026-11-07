@@ -21,6 +21,7 @@ type Item struct {
 
 var db *sql.DB
 
+//go:embed index.html style.css app.js
 var assets embed.FS
 
 func health_check(w http.ResponseWriter, r *http.Request) {
