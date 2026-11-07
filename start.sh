@@ -1,2 +1,1 @@
-docker build -t karya .
 docker run --rm --name karya -p 3000:3000 karya
