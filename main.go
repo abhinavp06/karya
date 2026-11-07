@@ -11,6 +11,7 @@ func health_check(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Do the task!")
 }
 
+// TODO: add validations and pagination later
 func get_items(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Getting items!")
 }
