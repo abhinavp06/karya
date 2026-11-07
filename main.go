@@ -50,6 +50,31 @@ func get_items(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(items)
 }
 
+// TODO: add 3 levels validation
+func create_item(w http.ResponseWriter, r *http.Request) {
+	var it Item
+	if err := json.NewDecoder(r.Body).Decode(&it); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	result, err := db.Exec("INSERT INTO items (parent_id, description) VALUES (?, ?)", it.ParentID, it.Description)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	it.ID = int(id)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(it)
+}
+
 // TODO: split into net.Listen + http.Serve.. print only if listen works
 func main() {
 	addr := ":3010"
@@ -58,6 +83,7 @@ func main() {
 
 	http.HandleFunc("/", health_check)
 	http.HandleFunc("GET /items", get_items)
+	http.HandleFunc("POST /items", create_item)
 
 	dbFile := "karya.db"
 
