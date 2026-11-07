@@ -11,6 +11,10 @@ func health_check(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Do the task!")
 }
 
+func get_items(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Getting items!")
+}
+
 // TODO: split into net.Listen + http.Serve.. print only if listen works
 func main() {
 	addr := ":3010"
@@ -18,6 +22,7 @@ func main() {
 	fmt.Println("Starting server on", addr)
 
 	http.HandleFunc("/", health_check)
+	http.HandleFunc("GET /items", get_items)
 
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
