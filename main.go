@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// TODO: split into net.Listen + http.Serve.. print only if listen works
 func main() {
 	addr := ":3010"
 
