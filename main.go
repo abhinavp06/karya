@@ -18,12 +18,10 @@ type Item struct {
 
 var db *sql.DB
 
-// TODO: check golang naming conventions (functions, variables, etc.)
 func health_check(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Do the task!")
 }
 
-// TODO: add validations and pagination
 func get_items(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query("SELECT id, parent_id, description FROM items ORDER BY id")
 	if err != nil {
@@ -50,7 +48,6 @@ func get_items(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(items)
 }
 
-// TODO: add 3 levels validation
 func create_item(w http.ResponseWriter, r *http.Request) {
 	var it Item
 	if err := json.NewDecoder(r.Body).Decode(&it); err != nil {
@@ -75,7 +72,6 @@ func create_item(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(it)
 }
 
-// TODO: split into net.Listen + http.Serve.. print only if listen works
 func main() {
 	addr := ":3010"
 
