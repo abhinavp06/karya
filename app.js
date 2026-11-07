@@ -47,7 +47,7 @@ function form(parent_id) {
   var li = el("li", "n");
   var f = el("form", "line");
   var input = el("input", "");
-  var label = parent_id === null ? "Add item" : "Add sub-item";
+  var label = parent_id === null ? "Add a task" : "Add a sub-task";
 
   input.placeholder = label;
   input.setAttribute("aria-label", label);
@@ -74,7 +74,7 @@ function form(parent_id) {
 function node(list, item, kids, depth) {
   var li = el("li", "n");
   var line = el("div", "line");
-  var plus = button("plus", "+", "Add sub-item");
+  var plus = button("plus", "+", "Add a sub-task");
   var ul, chev, i;
 
   plus.onclick = function (e) {
@@ -124,8 +124,8 @@ function render() {
   tree.appendChild(form(null));
 }
 
-render();
+edit(null);
 api("GET").then(function (data) {
   items = data;
-  render();
+  edit(null);
 }).catch(fail);
