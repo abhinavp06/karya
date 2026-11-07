@@ -2,10 +2,13 @@ package main
 
 import (
 	"database/sql"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -17,6 +20,8 @@ type Item struct {
 }
 
 var db *sql.DB
+
+var assets embed.FS
 
 func health_check(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Do the task!")
@@ -107,6 +112,12 @@ CREATE INDEX IF NOT EXISTS idx_items_parent ON items(parent_id);`
 	if _, err := db.Exec(schema); err != nil {
 		log.Fatalf("Failed to create schema: %v", err)
 	}
+
+	target, _ := url.Parse("http://127.0.0.1:3010")
+	front := http.NewServeMux()
+	front.Handle("/", http.FileServerFS(assets))
+	front.Handle("/items", httputil.NewSingleHostReverseProxy(target))
+	go func() { log.Fatal(http.ListenAndServe(":3000", front)) }()
 
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
