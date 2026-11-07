@@ -1,0 +1,79 @@
+* { box-sizing: border-box; }
+
+body {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 16px 72px;
+  background: #fff;
+  color: #000;
+  font: 15px/24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.15; }
+#msg { margin: 0 0 8px; min-height: 24px; color: #d2042d; }
+
+ul { list-style: none; margin: 0; padding: 0; }
+button, input { font: inherit; color: inherit; background: none; }
+
+/* Rails sit 5px in. A node's connector curves right into its dot. */
+.dot {
+  position: absolute;
+  top: 14px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.main { position: relative; min-height: 40px; padding: 8px 0 8px 22px; }
+.main .dot { left: 0; background: #000; }
+.main::after { content: ""; position: absolute; left: 5px; top: 26px; bottom: 0; width: 2px; background: #000; }
+.main.end { padding-bottom: 0; }
+.main.end .dot { background: #fff; }
+.main.end::after { top: 0; bottom: auto; height: 14px; }
+
+.n { position: relative; padding-left: 34px; }
+.n > .dot { left: 22px; z-index: 1; }
+.n::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 0;
+  width: 17px;
+  height: 21px;
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-bottom-left-radius: 10px;
+}
+.n:not(:last-child)::after, .tree > .n::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #000;
+}
+.n > ul { margin-left: -12px; }
+.closed > ul { display: none; }
+
+.line { position: relative; display: flex; align-items: flex-start; gap: 6px; min-height: 40px; padding: 8px 0 8px 8px; }
+.branch > .line { cursor: pointer; }
+.branch:not(.closed) > .line::after { content: ""; position: absolute; left: -7px; top: 26px; bottom: 0; width: 2px; background: #000; }
+
+.txt { min-width: 0; overflow-wrap: anywhere; }
+.tree > .n > .line > .txt { font-weight: 600; }
+.branch > .line:hover .txt { text-decoration: underline; text-underline-offset: 3px; }
+
+.plus, .chev { flex: none; width: 22px; height: 24px; padding: 0; border: 0; border-radius: 6px; cursor: pointer; }
+.plus { opacity: 0; }
+.line:hover .plus, .plus:focus-visible { opacity: 1; }
+@media (hover: none) { .plus { opacity: .6; } }
+
+.chev { margin-left: auto; font-size: 17px; transform: rotate(90deg); }
+.closed > .line > .chev { transform: none; }
+
+input { width: 100%; height: 24px; padding: 0; border: 0; border-bottom: 1px solid #d2d2d7; border-radius: 0; }
+input:focus { border-bottom-color: #000; outline: 0; }
+button:focus-visible { outline: 2px solid #000; }
